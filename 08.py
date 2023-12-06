@@ -1,24 +1,24 @@
-from datetime import datetime
+from decimal import Decimal, getcontext
 
-def get_str_date(date):
-    # Перетворюємо рядок з датою на об'єкт datetime
-    dt = datetime.strptime(date, '%Y-%m-%d %H:%M:%S.%fZ')
+def decimal_average(number_list, signs_count):
+    getcontext().prec = signs_count  # Встановлюємо точність для Decimal
 
-    # Отримуємо назву дня тижня, числа, назву місяця та рік
-    day = dt.strftime('%A')
-    day_number = dt.strftime('%d')
-    month = dt.strftime('%B')
-    year = dt.strftime('%Y')
+    sum_decimal = Decimal(0)  # Ініціалізуємо суму змінних типу Decimal
+    count = len(number_list)  # Кількість чисел у списку
 
-    # Формуємо рядок з результатом
-    result = f"{day} {day_number} {month} {year}"
+    for num in number_list:
+        sum_decimal += Decimal(str(num))  # Додаємо число до суми
 
-    return result
+    if count > 0:
+        average_decimal = sum_decimal / count  # Обчислюємо середнє арифметичне
+        return average_decimal
+
+    return Decimal(0)  # Повертаємо 0, якщо список чисел порожній
 
 
-#date = '2021-05-27 17:08:34.149Z'
-date = datetime.now()
-iso_format = date.strftime('%Y-%m-%d %H:%M:%S.%fZ')
-print(iso_format)
-formatted_date = get_str_date(iso_format)
-print(formatted_date)
+# Приклади використання
+result1 = decimal_average([3, 5, 77, 23, 0.57], 4)
+print(result1)  # Вивід: 21.714
+
+result2 = decimal_average([31, 55, 177, 2300, 1.57], 5)
+print(result2)  # Вивід: 512.91400

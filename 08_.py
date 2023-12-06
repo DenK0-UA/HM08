@@ -1,18 +1,28 @@
-from datetime import date
+import collections
 
-def get_days_in_month(month, year):
-    if month == 2 and date(year, 2, 29):
-        #if year % 4 == 0 and (year % 100 != 0 or year % 400 == 0):
-        return 29  # Високосний рік, лютого 29 днів
-    # elif month != 2:
-    #     return 28 # Звичайний рік, лютого 28 днів
+Cat = collections.namedtuple("Cat", ["nickname", "age", "owner"])
 
-    elif month in [4, 6, 9, 11]:
-        return 30  # Квітень, червень, вересень, листопад - 30 днів
+def convert_list(cats):
+    if isinstance(cats[0], dict):  # Перевіряємо, чи cats - список словників
+        converted_list = []
+        for cat_dict in cats:
+            cat_namedtuple = Cat(**cat_dict)  # Створюємо іменований кортеж зі словника
+            converted_list.append(cat_namedtuple)
+        return converted_list
     else:
-        return 31  # Січень, березень, травень, липень, серпень, жовтень, грудень - 31 день
+        converted_list = []
+        for cat_namedtuple in cats:
+            cat_dict = cat_namedtuple._asdict()  # Перетворюємо іменований кортеж у словник
+            converted_list.append(cat_dict)
+        return converted_list
 
 
-a = get_days_in_month(2,2021)
-print(a)
+# Приклад використання
+cats_list = [
+    Cat("Mick", 5, "Sara"),
+    Cat("Barsik", 7, "Olga"),
+    Cat("Simon", 3, "Yura")
+]
 
+converted_dict_list = convert_list(cats_list)
+print(converted_dict_list)
