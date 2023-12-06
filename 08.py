@@ -19,5 +19,3 @@ push(9)
 print(pop())
 print(pop())
 print(pop())
-
-#test
